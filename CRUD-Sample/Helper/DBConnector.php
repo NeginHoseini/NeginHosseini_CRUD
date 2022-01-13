@@ -2,38 +2,40 @@
 
 namespace CRUD\Helper;
 
+use Exception;
+use PDO;
+use PDOException;
+
 class DBConnector
 {
 
     /** @var mixed $db */
     private $db;
+
     private $con;
 
     public function __construct()
     {
-
+        $this->db = "crud";
     }
 
-    /**
-     * @throws \Exception
-     * @return void
-     */
+
     public function connect() : void
     {
         $server = "localhost";
         $username = "root";
         $password = "47547985";
-        $this->db = "crud";
 
-        $conn = mysqli_connect($server,$username,$password,$this->db);
-        $this->con = $conn;
+        try {
+            $connection = new PDO("mysql:host=$server;dbname=$this->db", $username, $password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->con=$connection;
+        } catch(PDOException $exception) {
 
-        if(!$conn){
-           echo "not connect".mysqli_connect_error();
+            echo "not connect".$exception->getMessage();
         }
-        else{
             echo "Connected!";
-        }
+
     }
 
     /**
@@ -42,19 +44,20 @@ class DBConnector
      */
     public function execQuery(string $query) : bool
     {
-
-        if($this->con->query($query)){
-            return true;
-        }
-        else{
+        try {
+            $this->con->exec($query);
+             }
+        catch(PDOException $exp) {
             echo "Error in execQuery";
             return false;
         }
+        return true;
+
     }
 
     /**
      * @param string $message
-     * @throws \Exception
+     * @throws Exception
      * @return void
      */
     private function exceptionHandler(string $message): void

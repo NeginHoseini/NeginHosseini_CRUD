@@ -5,10 +5,14 @@ namespace CRUD\Controller;
 use CRUD\Helper\PersonHelper;
 use CRUD\Model\Actions;
 use CRUD\Model\Person;
+use Exception;
 
 class PersonController
 {
-    public function switcher($uri,$request)
+    /**
+     * @throws Exception
+     */
+    public function switcher($uri, $request)
     {
         switch ($uri)
         {
@@ -33,7 +37,7 @@ class PersonController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createAction($request)
     {
@@ -50,7 +54,7 @@ class PersonController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateAction($request)
     {
@@ -66,6 +70,9 @@ class PersonController
         $personHelper->update($person);
     }
 
+    /**
+     * @throws Exception
+     */
     public function readAction($request)
     {
         $id=$_GET["id"];
@@ -74,7 +81,7 @@ class PersonController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function readAllAction($request)
     {
@@ -83,7 +90,7 @@ class PersonController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function deleteAction($request)
     {
